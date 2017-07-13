@@ -1,12 +1,27 @@
 import discord
 import asyncio
 import random
-from Globals import TOKEN, MSG_PREFIX, JOKES
+import json
+import os
+
+JSON_FILENAME = 'data/config.json'
+ROAST_FILENAME = 'data/roasts.txt'
+MSG_PREFIX = "~"
 client = discord.Client()
 
+# Randomize the list of insults from the file
 client.change_status(discord.Game(game='Say "roast me" to be roasted..'))
-lines = open('data/roasts.txt').read().splitlines()
+lines = open(ROAST_FILENAME).read().splitlines()
 
+# Load the JSON config
+if not os.path.exists(JSON_FILENAME):
+    with open(JSON_FILENAME, 'w+') as file:
+        fields = {"TOKEN": 'insert token here'}
+        json.dump(fields, file)
+
+jsonFile = open(JSON_FILENAME, 'r+')
+jdata = json.load(jsonFile)
+	 
 @client.event
 async def on_ready():
     print("%s is logging in..." % (client.user.name))
@@ -31,5 +46,5 @@ async def on_message(message):
 		
     	
 print("Running Bot...")
-client.run(TOKEN)
+client.run(jdata["TOKEN"])
 
