@@ -3,6 +3,7 @@ import asyncio
 import random
 import json
 import os
+import time
 
 CMD_LIST = ['ping', 'help']
 
@@ -39,7 +40,12 @@ jdata = json.load(jsonFile)
 	 
 @client.event
 async def on_ready():
-    print("%s is logging in..." % (client.user.name))
+    logEvent('INFO', "%s is logging in..." % (client.user.name))
+	
+def logEvent(category, message):
+    if category == None:
+        category = 'INFO'
+    print("[%s][%s]: %s" % (time.strftime("%d/%m/%Y-%H:%M:%S"), category, message))
 	
 @client.event
 async def on_message(message):
@@ -63,7 +69,10 @@ async def on_message(message):
 	# TODO: Make a list of commands so if we need to do ~help it will make it easier for us...
     elif msgContent.startswith(MSG_PREFIX) and not message.author == client.user:
         if message.content == ("{0}ping".format(MSG_PREFIX)) and not message.author == client.user:
-    	    await client.send_message(message.channel, "nigga, what u want?")			
+    	    await client.send_message(message.channel, "nigga, what u want?")	
+
+        elif message.content == ("{0}src".format(MSG_PREFIX)) and not message.author == client.user:
+    	    await client.send_message(message.channel, "https://github.com/NickdogeDev/cunt-bot")				
 			
     elif "<@335097025886552074>" in msgContent and not message.author == client.user:
     	await client.send_message(message.channel, "What you want nigga?")
@@ -75,17 +84,34 @@ async def on_message(message):
     	await client.send_message(message.channel, ":b: O N E L E S S :b: I Z Z A")
 		
     elif "<@!106521724073304064>" in msgContent and not message.author == client.user:
-    	await client.send_message(message.channel, "NIGGA DONT PING THAT BITCH...")		
+    	await client.send_message(message.channel, "NIGGA DONT PING THAT BITCH...")	
+
+    elif "hello" in msgContent and not message.author == client.user:
+    	await client.send_message(message.channel, "Hello, %s!" % message.author)	
+
+    elif "henlo" in msgContent and not message.author == client.user:
+    	await client.send_message(message.channel, "Henlo, %s!" % message.author)
+
+    elif "helo" in msgContent and not message.author == client.user:
+    	await client.send_message(message.channel, "Helo, %s!" % message.author)	
+
+    elif "hi" in msgContent and not message.author == client.user:
+    	await client.send_message(message.channel, "Hi, %s!" % message.author)	
+
+    elif "sup" in msgContent and not message.author == client.user:
+    	await client.send_message(message.channel, "Wassup, %s?" % message.author)
+
+    elif "whats good" in msgContent and not message.author == client.user:
+    	await client.send_message(message.channel, "Whats good, %s?" % message.author)
+
+    elif "your gay" in msgContent and not message.author == client.user:
+    	await client.send_message(message.channel, "I know that. Tell me something i don't know, %s" % message.author)			
 	
     # New moderator mode for the bot.
-    if ModeratorMode and not message.author == client.user:
-        print("[INFO]: %s said %s" % (message.author, msgContent))
+    if ModeratorMode:
+        logEvent('INFO', "%s said %s" % message.author, message.content)
         if msgContent in BLACKLIST_WORDS:
-    	    await client.send_message(message.channel, 'Why did you say "%s"? %s.' % (message.content, message.author))   
-			
-    if message.author == client.user:
-        print("[BOT DEBUGGING]: %s said %s" % (message.author, msgContent))            			
-    	
-print("Running Bot...")
+    	    await client.send_message(message.channel, 'Why did you say "%s"? %s.' % (message.content, message.author))
+logEvent('INFO', "Running Bot...")
 client.run(jdata["TOKEN"])
 
