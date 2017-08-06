@@ -49,11 +49,13 @@ def logEvent(category, message):
 	
 @client.event
 async def on_message(message):
-    # This is a bit messy, should be cleaned up and reorganized soon.
+    # Make the message content always lowercase.
     msgContent = message.content.lower()
+
+    # Message-triggered responses.
     if "fuck you" in msgContent and not message.author == client.user:
-    	await client.send_message(message.channel, "fuck YOU too %s. I hope you fucking die. Fucker." % message.author)
-		
+        await client.send_message(message.channel, "fuck YOU too %s. I hope you fucking die, cunt." % message.author)
+
     elif "kill myself" in msgContent or "kms" in msgContent and not message.author == client.user:
     	await client.send_message(message.channel, "Yeah, you should do it. Please.")   
 		
@@ -65,8 +67,10 @@ async def on_message(message):
 		
     elif "am i gay" in msgContent and not message.author == client.user:
     	await client.send_message(message.channel, random.choice(['yes', 'no']))
-		
-	# TODO: Make a list of commands so if we need to do ~help it will make it easier for us...
+
+    # TODO: Make a list of commands so if we need to do ~help it will make it easier for us...
+
+    # Developer Commands
     elif msgContent.startswith(MSG_PREFIX) and not message.author == client.user:
         if message.content == ("{0}ping".format(MSG_PREFIX)) and not message.author == client.user:
     	    await client.send_message(message.channel, "nigga, what u want?")	
@@ -74,6 +78,7 @@ async def on_message(message):
         elif message.content == ("{0}src".format(MSG_PREFIX)) and not message.author == client.user:
     	    await client.send_message(message.channel, "https://github.com/NickdogeDev/cunt-bot")				
 			
+    # Meme Commands
     elif "<@335097025886552074>" in msgContent and not message.author == client.user:
     	await client.send_message(message.channel, "What you want nigga?")
 	
@@ -105,7 +110,7 @@ async def on_message(message):
     	await client.send_message(message.channel, "Whats good, %s?" % message.author)
 
     elif "your gay" in msgContent and not message.author == client.user:
-    	await client.send_message(message.channel, "I know that. Tell me something i don't know, %s" % message.author)			
+    	await client.send_message(message.channel, "I know that. Tell me something i don't know, %s" % message.author)				
 	
     # New moderator mode for the bot.
     if ModeratorMode:
